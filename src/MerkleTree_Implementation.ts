@@ -1,7 +1,8 @@
 import { MerkleTree } from "merkletreejs";
 import { keccak256, toUtf8Bytes } from "ethers/lib/utils";
 
-export async function generateMerkleTree(): Promise<MerkleTree> {
+export function generateMerkleTree(): MerkleTree {
+
   let whitelist = [
     "randomEmail_1_@gmail.com",
     "randomEmail_2_@gmail.com",
@@ -22,6 +23,7 @@ export async function generateMerkleTree(): Promise<MerkleTree> {
 }
 
 export function verifyEmail(email: string, tree: MerkleTree): boolean {
+
   // Convert the email to its hashed form
   const leaf = keccak256(toUtf8Bytes(email));
 
@@ -34,8 +36,9 @@ export function verifyEmail(email: string, tree: MerkleTree): boolean {
   return isValid;
 }
 
-async function main() {
-  const tree = await generateMerkleTree();
+function main() {
+
+  const tree = generateMerkleTree();
   const emailToVerify = "randomEmail_1_@gmail.com";
 
   if (verifyEmail(emailToVerify, tree)) {
