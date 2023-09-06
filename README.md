@@ -19,7 +19,7 @@ The Ethereum blockchain as a whole relies on Keccak256 for its security.
 The main point of interest for us is that Keccak256 produces a unique 256-bit/32-byte/64-hexadecimal-character hash for each input. This means that no two inputs can produce the same output. This is called collision resistance.
 
 <p align="center">
-  <img src="images/1.png" width="540">
+  <img src="images/1.png" width="600">
 </p>
 
 >📝  **Note:**
@@ -56,22 +56,23 @@ To get started:
     console.log("Hello from Merkle Tree!");
 ```
 
-6. Inside the `package.json` file, add the following line to the `scripts` object:
+6. Inside the `package.json` file, add a new script to the `scripts` object:
 
 ```json
-    "scripts": {
-        "start": "tsc && node src/MerkleTree_Implementation.js"
-    }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node src/MerkleTree_Implementation.js"
+  },
 ``` 
 
-7. Run npm start to start a node process. If everything was done correctly, you should see the console statement printed in the terminal.
+7. Run `npm start` to start a node process. If everything was done correctly, you should see the console statement printed in the terminal.
 
 8. Run  `npm install merkletreejs` and `npm install ethers@5.7.2` to install the MerkleTree.js and ethers.js libraries respectively.
 We will also need the `@types/node` to work with the different types of data we will be using. Run `npm install --save-dev @types/node` to install it as a dev dependency.
 
 ## Constructing our Merkle Tree
 
-Inside `MerkleTree_Implementation.ts`, import the `MerkleTree` and `keccak256` functions from the libraries we just installed. We also need to import the `toUtf8Bytes` function from ethers.js to convert string data to bytes.
+Inside `MerkleTree_Implementation.ts`, delete its original contents, and import the `MerkleTree` and `keccak256` functions from the libraries we just installed. We also need to import the `toUtf8Bytes` function from ethers.js to convert string data to bytes.
 This is because the keccak256 function only accepts bytes as an input.
 
 ```typescript
@@ -82,7 +83,7 @@ import { keccak256, toUtf8Bytes } from "ethers/lib/utils";
 Next, declare a function that returns a Merkle Tree. We will be using this function to construct our Merkle Tree.
 
 ```typescript
-export async function generateMerkleTree(): Promise<MerkleTree> {
+export function generateMerkleTree(): MerkleTree {
 
   let whitelist = [
     "randomEmail_1_@gmail.com",
@@ -124,7 +125,7 @@ Before we make sense of that, let us take a look into how the Merkle Tree is str
 Take a look at this diagram:
 
 <p align="center">
-  <img src="images/2.png" width="540">
+  <img src="images/2.png" width="600">
 </p>
 
 1. In a Merkle Tree, the path from any leaf (data point) to the root can be represented by a series of hashes.
