@@ -19,7 +19,7 @@ The Ethereum blockchain as a whole relies on Keccak256 for its' security.
 The main point of interest for us is that Keccak256 produces a unique 256-bit/32-byte/64-hexadecimal-character hash for each input. This means that no two inputs can produce the same output. This is called collision resistance.
 
 <p align="center">
-  <img src="https://drive.google.com/file/d/15zFSnafuJL_gV1nSPiEmD6DoO9Pxc5Yf/view?usp=drive_link" style="border-radius: 20px">
+  <img src="images/1.png" style="border-radius: 20px">
 </p>
 
 >📝  **Note:**
@@ -37,16 +37,17 @@ To get started:
 4. Create a `tsconfig.json`file and fill it with the following data:
  
 ```json
-    {
+{
     "compilerOptions": {
         "target": "es5",
+        "lib": ["es2020", "dom"],
         "module": "commonjs",
         "strict": true,
         "esModuleInterop": true
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules"]
-    }
+}
 ```
 
 5. Create a `src` directory in the root of your project, and a `MerkleTree_Implementation.ts` file inside it. Paste this simple console log into the file:
@@ -66,3 +67,48 @@ To get started:
 7. Run npm start to start a node process. If everything was done correctly, you should see the console statement printed in the terminal.
 
 8. Run  `npm install merkletreejs` and `npm install ethers@5.7.2` to install the MerkleTree.js and ethers.js libraries respectively.
+We will also need the `@types/node` to work with the different types of data we will be using. Run `npm install --save-dev @types/node` to install it as a dev dependency.
+
+## Constructing our Merkle Tree
+
+Inside `MerkleTree_Implementation.ts`, import the `MerkleTree` and `keccak256` functions from the libraries we just installed. We also need to import the `toUtf8Bytes` function from ethers.js to convert string data to bytes.
+This is because the keccak256 function only accepts bytes as an input.
+
+```typescript
+import { MerkleTree } from 'merkletreejs'
+import { keccak256, toUtf8Bytes } from "ethers/lib/utils";
+```
+
+Next, declare a function that returns a Merkle Tree. We will be using this function to construct our Merkle Tree.
+
+```typescript
+export async function generateMerkleTree(): Promise<MerkleTree> {
+
+  let whitelist = [
+    "randomEmail_1_@gmail.com",
+    "randomEmail_2_@gmail.com",
+    "randomEmail_3_@gmail.com",
+  ];
+
+  // Leaves are the actual data points that make up a Merkle Tree
+  const leaves = whitelist.map((email) => keccak256(toUtf8Bytes(email)));
+
+  const merkleTree = new MerkleTree(leaves, keccak256, {sortPairs: true});
+
+  const root = merkleTree.getHexRoot();
+
+  console.log("The Merkle Root is:", root);
+  console.log("Printing the whole Merkle tree:", merkleTree.toString());
+
+  return merkleTree;
+}
+```
+
+Let us break down what is happening here:
+
+1. We declare an array of Email addresses called `whitelist`. This is the data we will be using to construct our Merkle Tree.
+2. The `map` function allows us to map each element of the `whitelist` array to a new array called `leaves`. This new array contains the hashed version of each Email address.
+3. We then use the `MerkleTree` constructor to create a new Merkle Tree. The constructor takes three arguments:
+    - `leaves`: The array of hashed Email addresses we just created.
+    - `keccak256`: The hashing function we will be using to hash our data.
+    - `{sortPairs: true}`: This is an optional argument that sorts the leaves and pairs them together. This is necessary for the Merkle Tree to work.
