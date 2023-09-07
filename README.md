@@ -19,7 +19,7 @@ The Ethereum blockchain as a whole relies on Keccak256 for its security.
 The main point of interest for us is that Keccak256 produces a unique 256-bit/32-byte/64-hexadecimal-character hash for each input. This means that no two inputs can produce the same output. This is called collision resistance.
 
 <p align="center">
-  <img src="images/1.png" width="600">
+  <img src="https://github.com/Genesis3800/SafeGlobal_MerkleTree/assets/56264430/9dfebeb5-8d66-475d-86e1-f97d7ae0c228" width="600">
 </p>
 
 >📝  **Note:**
@@ -125,7 +125,7 @@ Before we make sense of that, let us take a look into how the Merkle Tree is str
 Take a look at this diagram:
 
 <p align="center">
-  <img src="images/2.png" width="600">
+  <img src="https://github.com/Genesis3800/SafeGlobal_MerkleTree/assets/56264430/7882a1b6-8b03-4318-ac37-b90a986e214c" width="600">
 </p>
 
 1. In a Merkle Tree, the path from any leaf (data point) to the root can be represented by a series of hashes.
